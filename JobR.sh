@@ -14,6 +14,7 @@ cd \$PBS_O_WORKDIR
 ulimit -s unlimited
 chmod g+rw \${PBS_JOBNAME}.[eo]\${PBS_JOBID}
 module use /data004/software/GIF/modules
+module load python
 JOBHEAD
 echo ${line} >> ${INFILE%%.*}_${num}.sub
 echo "qstat -f \"\$PBS_JOBID\" | head" >> ${INFILE%%.*}_${num}.sub
