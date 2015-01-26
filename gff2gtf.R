@@ -1,0 +1,5 @@
+library(rtracklayer)
+test <- ("combined.gff")
+test2 <- import(test)
+export(test2,"test.gtf","gtf")
+savehistory(file="gff2gtf")
