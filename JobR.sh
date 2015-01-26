@@ -1,7 +1,23 @@
 #!/bin/bash
-INFILE="$1"
+LINES="$1"
+INFILE="$2"
+function readlines () {
+    local N="$1"
+    local line
+    local rc="1"
+    for i in $(seq 1 $N); do
+        read line
+        if [ $? -eq 0 ]; then
+            echo $line
+            rc="0"
+        else
+            break
+        fi
+    done
+    return $rc
+}
 num=1
-while read line; do
+while chunk=$(readlines ${LINES}); do
 cat <<JOBHEAD > ${INFILE%%.*}_${num}.sub
 #!/bin/bash
 #PBS -l vmem=256Gb,pmem=8Gb,mem=256Gb
@@ -16,7 +32,7 @@ chmod g+rw \${PBS_JOBNAME}.[eo]\${PBS_JOBID}
 module use /data004/software/GIF/modules
 module load python
 JOBHEAD
-echo ${line} >> ${INFILE%%.*}_${num}.sub
+echo ${chunk} >> ${INFILE%%.*}_${num}.sub
 echo "qstat -f \"\$PBS_JOBID\" | head" >> ${INFILE%%.*}_${num}.sub
 ((num++))
 done<"${INFILE}"
