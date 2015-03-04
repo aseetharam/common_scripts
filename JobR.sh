@@ -36,6 +36,11 @@ Author
 
 EOF
 }
+if [ $# -lt 2 ] ; then
+        printUsage
+        exit 0
+fi
+
 
 LINES="$1"
 INFILE="$2"
@@ -49,7 +54,7 @@ function readlines () {
     for i in $(seq 1 $N); do
         read line
         if [ $? -eq 0 ]; then
-            echo $line
+            echo "$line\n"
             rc="0"
         else
             break
@@ -72,9 +77,10 @@ ulimit -s unlimited
 chmod g+rw \${PBS_JOBNAME}.[eo]\${PBS_JOBID}
 module use /data004/software/GIF/modules
 module load parallel
+module load ncbi-blast
 parallel <<FIL
 JOBHEAD
-echo ${chunk} >> ${INFILE%%.*}_${num}.sub
+echo -e "${chunk}" >> ${INFILE%%.*}_${num}.sub
 echo -e "FIL\nqstat -f \"\$PBS_JOBID\" | head" >> ${INFILE%%.*}_${num}.sub
 ((num++))
 done<"${INFILE}"

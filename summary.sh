@@ -1,9 +1,9 @@
 #!/bin/sh
+# reads stdin and prints summary statistics
+# total, count, mean, median, min and max
+# you can pipe this through scripts or redirect input <
+# modified from http://unix.stackexchange.com/a/13779/27194
 sort -n | awk '
-  BEGIN {
-    c = 0;
-    sum = 0;
-  }
   $1 ~ /^[0-9]*(\.[0-9]*)?$/ {
     a[c++] = $1;
     sum += $1;
@@ -16,6 +16,11 @@ sort -n | awk '
       median = ( a[c/2] + a[c/2-1] ) / 2;
     }
     OFS="\t";
-    print sum, c, ave, median, a[0], a[c-1];
+    { printf ("Total:\t""%'"'"'d\n", sum)}
+    { printf ("Count:\t""%'"'"'d\n", c)}
+    { printf ("Mean:\t""%'"'"'d\n", ave)}
+    { printf ("Median:\t""%'"'"'d\n", median)}
+    { printf ("Min:\t""%'"'"'d\n", a[0])}
+    { printf ("Max:\t""%'"'"'d\n", a[c-1])}
   }
 '
