@@ -1,8 +1,8 @@
 #!/bin/bash
-
+#PWD=$(pwd)
 CDIR=${PWD##*/}
-PILAST=$(echo ${CDIR} | cut -d "_" -f 2)
-PROJNAME=$(echo ${CDIR} | cut -d "_" -f 3- )
+#PILAST=$(echo ${CDIR} | cut -d "_" -f 2)
+#PROJNAME=$(echo ${CDIR} | cut -d "_" -f 3- )
 
 for FILE in $(find . -name "*.o*.hpc5"); do
    EFILE=$(echo $FILE | sed 's/\.o/.e/1')
